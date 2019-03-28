@@ -55,7 +55,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	psqlInfo := a.settings.PsqlInfo
 	ind := input.Ind
 	actual := input.Act
-	pred := input.Pred[0].(int)
+	pred := input.Pred[0]
 	t := input.T
 
 	ctx.Logger().Debugf("Input: %s, %s, %s,%s", ind, actual, pred, t)

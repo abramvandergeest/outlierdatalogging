@@ -8,19 +8,19 @@ type Settings struct {
 }
 
 type Input struct {
-	Ind  int32         `md:"ind,required"`
-	Act  int32         `md:"act,required"`
-	Pred []interface{} `md:"pred,required"`
-	T    int32         `md:"t,required"`
+	Ind  int64   `md:"ind,required"`
+	Act  int64   `md:"act,required"`
+	Pred []int64 `md:"pred,required"`
+	T    int64   `md:"t,required"`
 }
 
 func (r *Input) FromMap(values map[string]interface{}) error {
-	indVal, _ := coerce.ToInt32(values["ind"])
+	indVal, _ := coerce.ToInt64(values["ind"])
 	r.Ind = indVal
-	actVal, _ := coerce.ToInt32(values["act"])
+	actVal, _ := coerce.ToInt64(values["act"])
 	r.Act = actVal
-	r.Pred = values["pred"].([]interface{})
-	tVal, _ := coerce.ToInt32(values["t"])
+	r.Pred = values["pred"].([]int64)
+	tVal, _ := coerce.ToInt64(values["t"])
 	r.T = tVal
 	return nil
 }
