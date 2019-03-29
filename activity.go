@@ -71,12 +71,25 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		return true, fmt.Errorf("opening %s database failed: %s", drivername, err)
 	}
 
+	tp := 0
+	fp := 0
+	fn := 0
+	tn := 0
+	if actual == pred && actual == 1 {
+		tp = 1
+	} else if actual == pred && actual == 0 {
+		tn = 1
+	} else if actual != pred && pred == 1 {
+		fp = 1
+	} else if actual != pred && pred == 0 {
+		fn = 1
+	}
 	//  CREATE TABLE IF NOT EXISTS test.outlier (ind integer, act integer, pred integer, t integer);
 	sqlStatement := `
-	INSERT INTO test.outlier (ind, act, pred, t) 
-	VALUES ($1, $2, $3, $4)
+	INSERT INTO test.outlier (ind, act, pred, t,truepos,falsepos,falseneg,trueneg) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-	_, err = db.Exec(sqlStatement, ind, actual, pred, t)
+	_, err = db.Exec(sqlStatement, ind, actual, pred, t, tp, fp, fn, tn)
 	if err != nil {
 		return true, fmt.Errorf("inserting into %s database failed: %s", drivername, err)
 	}
